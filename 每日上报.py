@@ -1,6 +1,6 @@
 import os
 import traceback
-from time import sleep
+import time
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
 
