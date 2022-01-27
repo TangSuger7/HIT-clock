@@ -28,9 +28,12 @@ if driver.find_element_by_id('username'):
 time.sleep(1)
 
 driver.execute_script(f'kzl10 = "{loc}"')
-driver.execute_script('document.getElementsByClassName("checkbtn")[0].click()')
-driver.execute_script('document.getElementsByClassName("checkbtn")[1].click()')
-driver.execute_script('document.getElementsByClassName("checkbtn")[2].click()')
+driver.execute_script('document.getElementsByClassName("checkbtn")[0].checked=true')
+driver.execute_script('document.getElementsByClassName("checkbtn")[1].checked=true')
+driver.execute_script('document.getElementsByClassName("checkbtn")[2].checked=true')
+# driver.execute_script('document.getElementsByClassName("checkbtn")[0].click()')
+# driver.execute_script('document.getElementsByClassName("checkbtn")[1].click()')
+# driver.execute_script('document.getElementsByClassName("checkbtn")[2].click()')
 
 driver.find_element_by_class_name('submit').click()
 time.sleep(1)
