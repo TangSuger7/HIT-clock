@@ -21,7 +21,7 @@ driver.get('https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/xsMrsbNew/edit')
 if driver.find_element_by_id('username'):
     time.sleep(2)
     driver.find_element_by_id('username').send_keys(ID)
-    driver.find_element_by_id('rememberMe').click()
+#     driver.find_element_by_id('rememberMe').click()
     driver.find_element_by_id('password').send_keys(key)
 
 # driver.find_element_by_id('login_submit').submit()
