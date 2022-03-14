@@ -20,7 +20,7 @@ driver.get('https://ids.hit.edu.cn/authserver/login')
 driver.find_element_by_id('username').send_keys(USERNAME)
 driver.find_element_by_id('password').send_keys(PASSWORD)
 driver.find_element_by_id('login_submit').click()
-
+print('111')
 driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": ua + ' ' + app})
 
 def tryClick(id):
@@ -31,7 +31,7 @@ def tryClick(id):
 		pass
 
 driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": ua + ' ' + app})
-
+print('222')
 success = False
 for i in range (0, 5):
 	try:
@@ -43,6 +43,7 @@ for i in range (0, 5):
 		tryClick("txfscheckbox1")
 		tryClick("txfscheckbox2")
 		tryClick("txfscheckbox3")
+		print(i)
 		driver.find_element_by_class_name('submit').click()
 		success = True
 		break
