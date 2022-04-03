@@ -3,6 +3,8 @@ import traceback
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
+from PIL import Image
+import ddddocr
 
 print('初始化浏览器')
 USERNAME   = os.environ['ID']
@@ -20,7 +22,7 @@ driver.get('https://ids.hit.edu.cn/authserver/login')
 driver.find_element_by_id('username').send_keys(USERNAME)
 driver.find_element_by_id('password').send_keys(PASSWORD)
 driver.find_element_by_id('login_submit').click()
-print('111')
+
 driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": ua + ' ' + app})
 
 def tryClick(id):
@@ -31,7 +33,30 @@ def tryClick(id):
 		pass
 
 driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": ua + ' ' + app})
-print('222')
+
+
+def yzm():
+	try:
+		# 获取验证码
+		# 获取验证码
+		operation = True
+		while (operation):
+			imgelement = driver.find_element_by_xpath('//*[@id="imgObjjgRegist"]')  # 定位验证码
+			imgelement.screenshot('./save.png')
+			# 验证码识别
+			ocr = ddddocr.DdddOcr()
+			with open('./save.png', 'rb') as f:
+				img_bytes = f.read()
+				res = ocr.classification(img_bytes)
+			f.close()
+			print(res)
+			driver.find_element_by_id('yzm').send_keys(res)
+			driver.find_element_by_id('pass-dialog').click()
+			if not driver.find_elements_by_class_name("weui-toptips_warn"):
+				operation = False
+	except Exception as e:
+		print(e)
+
 success = False
 for i in range (0, 5):
 	try:
@@ -43,8 +68,8 @@ for i in range (0, 5):
 		tryClick("txfscheckbox1")
 		tryClick("txfscheckbox2")
 		tryClick("txfscheckbox3")
-		print(i)
 		driver.find_element_by_class_name('submit').click()
+		yzm()
 		success = True
 		break
 	except:
