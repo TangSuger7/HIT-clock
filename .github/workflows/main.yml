@@ -21,6 +21,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install selenium
         pip install Pillow
+        pip install ddddocr -i https://pypi.tuna.tsinghua.edu.cn/simple
     - name: Install ChromeDriver
       run: |
         CHROME_VERSION=$(google-chrome --version | cut -f 3 -d ' ' | cut -d '.' -f 1) \
