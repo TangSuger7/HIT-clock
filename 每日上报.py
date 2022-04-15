@@ -3,6 +3,8 @@ import traceback
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.by import By
 from PIL import Image
 import ddddocr
 
@@ -40,9 +42,22 @@ def yzm():
 		# 获取验证码
 		# 获取验证码
 		operation = True
+		counter = 0
 		while (operation):
-			imgelement = driver.find_element_by_xpath('//*[@id="imgObjjgRegist"]')  # 定位验证码
-			imgelement.screenshot('./save.png')
+			if counter > 5:
+				operation = False
+			WebDriverWait(driver, 10).until(
+                		EC.presence_of_element_located((By.XPATH, "//*[@id='imgObjjgRegist']")))
+			imgelement = driver.find_elements_by_xpath('//*[@id="imgObjjgRegist"]')  # 定位验证码
+			if not imgelement:
+				return
+			try:
+				imgelement[0].screenshot('./save.png')
+			except Exception as e:
+				print("截图失败")
+				print(e)
+				counter += 1
+				continue
 			# 验证码识别
 			ocr = ddddocr.DdddOcr()
 			with open('./save.png', 'rb') as f:
@@ -52,15 +67,21 @@ def yzm():
 			print(res)
 			driver.find_element_by_id('yzm').send_keys(res)
 			driver.find_element_by_id('pass-dialog').click()
+
+			counter += 1
+			sleep(1)
 			if not driver.find_elements_by_class_name("weui-toptips_warn"):
 				operation = False
 	except Exception as e:
+		print("验证码处理失败")
 		print(e)
 
 success = False
 for i in range (0, 5):
 	try:
 		driver.get('https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/xsMrsbNew/edit')
+		driver.maximize_window()
+		driver.set_window_size(800, 600)
 		driver.execute_script(f'kzl10 = "{LOCATION}"')
 # 		driver.execute_script('document.getElementById("kzl18-0").checked = true')
 # 		driver.execute_script('document.getElementById("kzl32-2").checked = true')
@@ -69,6 +90,7 @@ for i in range (0, 5):
 		tryClick("txfscheckbox2")
 		tryClick("txfscheckbox3")
 		driver.find_element_by_class_name('submit').click()
+		sleep(5) # 防止有验证码没加载
 		yzm()
 		success = True
 		break
