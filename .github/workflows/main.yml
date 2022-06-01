@@ -38,7 +38,9 @@ jobs:
         ID: ${{ secrets.ID }}
         PASSWORD: ${{ secrets.PASSWORD }}
         LOCATION: ${{ secrets.LOCATION }}
-      run: python 每日上报.py
+      run: |
+          python 每日上报.py
+          python 每日上报.py
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@v2
       with:
